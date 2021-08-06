@@ -36,7 +36,7 @@ const Header = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant='h6' className={classes.title}>
-            Simple Study
+            React Rails API Practice
           </Typography>
           <Button color='inherit'>Login</Button>
         </Toolbar>
