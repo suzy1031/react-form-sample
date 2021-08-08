@@ -1,23 +1,27 @@
 import React from 'react';
 // style
-import { Box, Container } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
-  main: {
-    height: '100vh',
+const useStyles = makeStyles(() => ({
+  container: {
+    marginTop: '3rem',
   },
-});
+}));
 
-const MainContainer = (props) => {
-  const { children } = props;
+const MainContainer = ({ children }) => {
   const classes = useStyles();
+
   return (
-    <Container fixed>
-      <main className={classes.main}>
-        <Box m={5}>{children}</Box>
+    <>
+      <main>
+        <Container maxWidth='lg' className={classes.container}>
+          <Grid container justifyContent='center'>
+            <Grid item>{children}</Grid>
+          </Grid>
+        </Container>
       </main>
-    </Container>
+    </>
   );
 };
 export default MainContainer;
