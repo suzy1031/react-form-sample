@@ -1,18 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 // style
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 // api
 import { signOut } from '../../lib/api/auth';
 // context
 import { AuthContext } from '../../App';
+// component
+import HeaderDrawer from './HeaderDrawer';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -31,8 +35,15 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
+const drawerItem = [
+  { label: '一覧へ戻る', path: '/' },
+  { label: '新規作成', path: '/new' },
+  { label: '自分の投稿', path: '#' },
+];
+
 const Header = () => {
-  const { loading, isSignedIn, setIsSignedIn } = useContext(AuthContext);
+  const { loading, isSignedIn, setIsSignedIn, currentUser } =
+    useContext(AuthContext);
   const classes = useStyles();
   const history = useHistory();
 
@@ -94,25 +105,42 @@ const Header = () => {
       return <></>;
     }
   };
+
+  const [open, setOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
+
   return (
-    <div className={classes.root}>
-      <AppBar position='static'>
-        <Toolbar>
-          <IconButton
-            edge='start'
-            className={classes.menuButton}
-            color='inherit'
-            aria-label='menu'
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant='h6' className={classes.title}>
-            React Rails API Practice
-          </Typography>
-          <AuthButtons />
-        </Toolbar>
-      </AppBar>
-    </div>
+    <>
+      <div className={classes.root}>
+        <AppBar position='static'>
+          <Toolbar>
+            {isSignedIn && currentUser && (
+              <IconButton
+                edge='start'
+                className={classes.menuButton}
+                color='inherit'
+                aria-label='menu'
+                onClick={handleDrawerToggle}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+            <Typography variant='h6' className={classes.title}>
+              React Rails API Practice
+            </Typography>
+            <AuthButtons />
+          </Toolbar>
+        </AppBar>
+      </div>
+      <HeaderDrawer
+        open={open}
+        handleDrawerToggle={handleDrawerToggle}
+        drawerItem={drawerItem}
+      />
+    </>
   );
 };
 export default Header;

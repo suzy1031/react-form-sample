@@ -21,12 +21,7 @@ const SignUp = () => {
   const signUpHandleSubmit = async (e) => {
     e.preventDefault();
 
-    const params = {
-      name: name,
-      email: email,
-      password: password,
-      passwordConfirmation: passwordConfirmation,
-    };
+    const params = generateParams();
 
     try {
       const res = await signUp(params);
@@ -46,6 +41,16 @@ const SignUp = () => {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const generateParams = () => {
+    const signUpParams = {
+      name: name,
+      email: email,
+      password: password,
+      passwordConfirmation: passwordConfirmation,
+    };
+    return signUpParams;
   };
 
   return (
